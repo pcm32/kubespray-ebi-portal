@@ -1,0 +1,64 @@
+# requires shade
+- hosts: localhost
+  gather_facts: False
+  vars:
+    img_version: "current"
+    img_prefix: "Ubuntu-xenial-16.04"
+    img_extension: ".img"
+    url: "https://cloud-images.ubuntu.com/xenial/{{ img_version }}/xenial-server-cloudimg-amd64-disk1{{ img_extension }}"
+    compress_suffix: ""
+    timeout: 1800
+  tasks:
+    - name: "set image facts"
+      set_fact:
+        image_name: "{{ img_prefix }}-{{ img_version }}"
+    - name: "check if image is present in OpenStack"
+      os_image_facts:
+        image: "{{ image_name }}"
+    - debug:
+        msg: "Downloading {{ image_name }} from {{ url }} into /tmp/{{ image_name }}{{ img_extension }}"
+      when: openstack_image == None
+    - name: "download base image"
+      command: |
+        curl {{ url }} -o /tmp/{{ image_name }}{{ img_extension }}{{ compress_suffix }}
+      notify:
+        - delete local image
+      async: "{{timeout}}"
+      poll: 0
+      register: kubenow_download
+      when: openstack_image == None
+    - name: "wait for image download to be done"
+      async_status: jid={{ kubenow_download.ansible_job_id }}
+      register: download_status
+      until: download_status.finished
+      retries: "{{((timeout | int) / 10) | int}}"
+      delay: 10
+      when: openstack_image == None
+    - name: "optional bunzip2 uncompress of image"
+      shell: |
+        bunzip2 /tmp/{{ image_name }}{{ img_extension }}{{ compress_suffix }}
+      when: compress_suffix == ".bz2"
+    - name: "upload image to OpenStack"
+      os_image:
+        name: "{{ image_name }}"
+        filename: "/tmp/{{ image_name }}{{ img_extension }}"
+        container_format: bare
+        disk_format: qcow2
+        state: present
+        timeout: "{{timeout}}"
+      async: "{{timeout}}"
+      poll: 0
+      register: kubenow_upload
+      when: openstack_image == None
+    - name: "wait for image upload to be done"
+      async_status: jid={{ kubenow_upload.ansible_job_id }}
+      register: upload_status
+      until: upload_status.finished
+      retries: "{{((timeout | int) / 10) | int}}"
+      delay: 10
+      when: openstack_image == None
+  handlers:
+    - name: delete local image
+      file:
+        path: "/tmp/{{ image_name }}{{ img_extension }}"
+        state: absent
