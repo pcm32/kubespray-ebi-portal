@@ -10,7 +10,7 @@ This repo allows you to deploy Kubernetes plus a shared file system (GlusterFS) 
 - a written config for the deployment. See the included config.sh.sample
 
 
-## How to use
+## How to use it
 
 Assemble a folder in your machine with the following files:
 
@@ -35,7 +35,7 @@ Finally, to run it:
 
 $ bash start-env-for-running.sh
 
-Then inside the container, execute ./run-deployment.sh
+Then inside the container, execute **./run-deployment.sh**
 
 After some 20 minutes it should provide you with access instructions for both `kubectl` and `ssh`. 
 
