@@ -32,10 +32,46 @@ Keep this directory safe, as it will keep the state of your deployed cluster, co
 
 Finally, to run it:
 
+```
 $ bash start-env-for-running.sh
+```
+
+It might need to pull the first time, which might make you miss the following instruction:
 
 Then inside the container, execute **./run-deployment.sh**
 
 After some 20 minutes it should provide you with access instructions for both `kubectl` and `ssh`. 
 
-Hint: if possible, limit all your interaction with the cluster through `kubectl`, which will make this cluster more easily "disposable". 
+## Access the cluster
+
+### Inside the same container
+
+First, make sure that the `$KUBECONFIG` is set to `artifacts/admin.conf`, then execute:
+
+```
+$ kubectl <whatever-command-you-want>
+```
+
+### Outside the container
+
+Set `$KUBECONFIG` to `$PROJECT_DIR/artifacts/admin.conf`, then:
+
+
+```
+$ kubectl <whatever-command-you-want>
+```
+
+### ssh-access
+
+See artifacts/ssh-connect file for details.
+
+
+## Destroying the cluster
+
+Execute inside the same container, or after running `start-env-for-running.sh` in an environment where `$PROJECT_DIR` is set to the correct directory:
+
+```
+$ bash run-destroy.sh
+```
+
+**Hint:** if possible, limit all your interaction with the cluster through `kubectl`, which will make this cluster more easily "disposable". 

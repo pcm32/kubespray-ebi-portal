@@ -21,9 +21,12 @@ sed -i 's+https://.*:6443+https://'"$HOSTNAME"':6443+' artifacts/admin.conf
 echo "Add this line to your external /etc/hosts if needed:"
 echo "$PUBLIC_IP $HOSTNAME"
 echo "$PUBLIC_IP $HOSTNAME" >> /etc/hosts
+echo "$PUBLIC_IP $HOSTNAME" >> artifacts/to-add-to-your-etc-hosts
 
 echo "Execute the following line in this shell to connect to your cluster through kubectl:"
 echo "export KUBECONFIG=artifacts/admin.conf"
 echo ""
 echo "To connect through ssh:"
 echo "ssh -i keys/key.pem ubuntu@$PUBLIC_IP"
+echo "ssh -i keys/key.pem ubuntu@$PUBLIC_IP" >> artifacts/ssh-connect
+
