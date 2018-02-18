@@ -7,6 +7,7 @@ COPY ostack ostack
 COPY run-deployment.sh run-deployment.sh
 COPY run-destroy.sh run-destroy.sh
 COPY set-kubeconfig.sh set-kubeconfig.sh
+COPY image-settings.sh image-settings.sh
 COPY patches patches
 RUN patch -p0 -f < patches/kubespray-tf_secgroup_taints.patch
 RUN chmod a+x set-kubeconfig.sh run-destroy.sh
