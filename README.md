@@ -1,18 +1,21 @@
 # Deployment of Kubernetes + shared file system
 
+This repo allows you to deploy Kubernetes plus a shared file system (GlusterFS) using Kubespray v2.3.0 (plus two minor patches).
+
 ## Requirements
 
 - docker
 - ability to generate ssh private and public keys
 - openstack RC API access file, from Horizon
-- a written config for the deployment
+- a written config for the deployment. See the included config.sh.sample
+
 
 ## How to use
 
 Assemble a folder in your machine with the following files:
 
-- `keys`: a folder named `keys` containing key.pub and key.pem (for the private key)
-- `openstack.rc`: OpenStack API access RC file
+- `keys`: a folder named `keys` containing key.pub and key.pem (for the private key). If you don't have a set of keys that you want to use, you can create keys executing `ssh-keygen -t rsa` on linux/macOS Terminal, and rename keys adequately.
+- `openstack.rc`: OpenStack API access RC file, which you can obtain from your OpenStack Horizon dashboard, under Compute -> API Access. Prefer the v3 file if available.
 - `config.sh`: Bash file with configuration for the deployment (flavours for instances, number of master, etc, see config.sh.sample)
 
 If not available, two folders will be created:
