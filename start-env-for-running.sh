@@ -1,5 +1,7 @@
 #mkdir -p keys
 
+ENV_DEPLOY_DOCKER_IMAGE=${ENV_DEPLOY_DOCKER_IMAGE:-quay.io/pcm32/kubespray-ebi-portal:v2.3.0-ubuntu-xenial}
+
 if [[ ! "$PROJECT_DIR" = /* ]]; then
 	echo "PROJECT_DIR should be a full path to the directory where you have:"
 	echo "- keys: folder with two files, key.pub and key.pem (public and private key)."
@@ -32,33 +34,12 @@ if [[ ! -e $PROJECT_DIR/config.sh ]]; then
 fi
 
 
-
-
-#if [[ ! "$PUBLIC_KEY" = /* ]]; then
-#	echo "PUBLIC_KEY should be a full path to the public key"
-#	exit 1
-#fi
-
-#if [[ ! "$PRIVATE_KEY" = /* ]]; then
-#	echo "PRIVATE_KEY should be a full path to the private pem key"
-#	exit 1
-#fi
-
-
-#cp $PUBLIC_KEY keys/key.pub
-#cp $PRIVATE_KEY keys/key.pem
-
 MOUNT_STATE_DIR="-v $PROJECT_DIR/deployments:/cloud-deploy/deployments"
 if [[ ! -z $STATE_DIR ]]; then
 	MOUNT_STATE_DIR="-v $DEPLOYMENT_STATE_DIR:/cloud-deploy/deployments"
 fi
 
 DEPLOYMENT_CONFIG=$PROJECT_DIR/config.sh
-#if [[ -z ${DEPLOYMENT_CONFIG+x} ]]; then
-#	echo "DEPLOYMENT_CONFIG env var needs to be defined and point to your config file."
-#	exit 1
-#fi
-
 MOUNT_DEPLOYMENT_CONFIG="-v $DEPLOYMENT_CONFIG:/cloud-deploy/config.sh"
 
 OPENSTACK_RC=$PROJECT_DIR/openstack.rc
@@ -77,4 +58,4 @@ MOUNT_ARTIFACTS="-v $PROJECT_DIR/artifacts:/cloud-deploy/artifacts"
 
 docker run -v $PWD/keys:/cloud-deploy/keys $MOUNT_DEPLOYMENT_CONFIG \
 	$MOUNT_STATE_DIR $MOUNT_OPENSTACK_RC $MOUNT_ARTIFACTS -it --entrypoint bash \
-	pcm32/kubespray-ebi-portal:v2.3.0_cv0.1.0
+	$ENV_DEPLOY_DOCKER_IMAGE
