@@ -1,0 +1,45 @@
+# Deployment name, which determines the prefix of the machine names and others
+export NAME="phenomenal-hackathon-1"
+# The reference defines the deployments/$PORTAL_DEPLOYMENT_REFERENCE where state is saved, and used as an identifier in EBI Portal
+export PORTAL_DEPLOYMENT_REFERENCE="id-phnmnl-hackathon-1"
+
+
+# Vars passed to terraform
+export TF_VAR_kube_api_pwd="write-your-kubernetes-admin-password-here"
+
+## OpenStack specific settings and flavours
+
+### OpenStack network name with external access and a router attached (subnet associated), find it in horizon Network -> Networks.
+### This is normally a private network.
+export TF_VAR_network_name="your_private_net"
+### OpenStack public network from where the floating IPs are drawn from.
+export TF_VAR_floatingip_pool="your_ext_net"
+### Flavours for the different machines, normally the IDs shown in glance list-flavours or shown on Horizon when aiming to launch an instance.
+### This will define the amount of RAM, CPU and disk of each machine.
+export TF_VAR_flavor_k8s_node="flavour-id-for-nodes" 
+export TF_VAR_flavor_k8s_master="flavour-id-for-masters"
+export TF_VAR_flavor_gfs_node="flavour-id-for-gfs-machines"
+
+### Cluster layout (how many masters, how many nodes, etc).
+### For HA you need at least 3 masters. By default, our masters are tainted not to act as nodes, so it should be safe to keep etcd 
+### on them for small clusters.
+export TF_VAR_number_of_etcd="0"
+# This type of master includes etcd and consume a floating ip, one of the will be used as bastion for ansible.
+export TF_VAR_number_of_k8s_masters="1"
+# This type of master includes etcd but no floating ip.
+export TF_VAR_number_of_k8s_masters_no_floating_ip="2"
+# Masters without etcd, this requires setting TF_VAR_number_of_etcd >= 1.
+export TF_VAR_number_of_k8s_masters_no_etcd="0"
+export TF_VAR_number_of_k8s_masters_no_floating_ip_no_etcd="0"
+export TF_VAR_number_of_k8s_nodes_no_floating_ip="1"
+export TF_VAR_number_of_k8s_nodes="0"
+## Glusterfs, at least 3... other setups haven't been tested well.
+export TF_VAR_number_of_gfs_nodes_no_floating_ip="3"
+# The amount of disk used by GlusterFS to provide a brick
+export TF_VAR_gfs_volume_size_in_gb="50"
+
+
+# Variables for ansible
+export KUBELET_DEPLOYMENT_TYPE="host"
+export KUBECONFIG=$PWD/artifacts/admin.conf
+
