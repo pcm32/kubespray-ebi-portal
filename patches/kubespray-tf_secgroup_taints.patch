@@ -1,0 +1,51 @@
+--- kubespray/contrib/terraform/openstack/kubespray.tf	2017-10-26 15:02:24.000000000 +0000
++++ patches/kubespray_mods.tf	2018-02-18 09:07:23.875176593 +0000
+@@ -17,6 +17,12 @@
+ resource "openstack_compute_secgroup_v2" "k8s_master" {
+     name = "${var.cluster_name}-k8s-master"
+     description = "${var.cluster_name} - Kubernetes Master"
++    rule {
++        ip_protocol = "tcp"
++        from_port = "6443"
++        to_port = "6443"
++        cidr = "0.0.0.0/0"
++    }
+ }
+ 
+ resource "openstack_compute_secgroup_v2" "k8s" {
+@@ -68,7 +74,7 @@
+     floating_ip = "${element(openstack_networking_floatingip_v2.k8s_master.*.address, count.index)}"
+     metadata = {
+         ssh_user = "${var.ssh_user}"
+-        kubespray_groups = "etcd,kube-master,kube-node,k8s-cluster,vault"
++        kubespray_groups = "etcd,kube-master,k8s-cluster,vault"
+     }
+     
+ }
+@@ -87,7 +93,7 @@
+     floating_ip = "${element(openstack_networking_floatingip_v2.k8s_master.*.address, count.index + var.number_of_k8s_masters)}"
+     metadata = {
+         ssh_user = "${var.ssh_user}"
+-        kubespray_groups = "kube-master,kube-node,k8s-cluster,vault"
++        kubespray_groups = "kube-master,k8s-cluster,vault"
+     }
+     
+ }
+@@ -125,7 +131,7 @@
+                         "${openstack_compute_secgroup_v2.k8s.name}" ]
+     metadata = {
+         ssh_user = "${var.ssh_user}"
+-        kubespray_groups = "etcd,kube-master,kube-node,k8s-cluster,vault,no-floating"
++        kubespray_groups = "etcd,kube-master,k8s-cluster,vault,no-floating"
+     }
+     provisioner "local-exec" {
+         command = "sed s/USER/${var.ssh_user}/ contrib/terraform/openstack/ansible_bastion_template.txt | sed s/BASTION_ADDRESS/${element(openstack_networking_floatingip_v2.k8s_master.*.address, 0)}/ > contrib/terraform/openstack/group_vars/no-floating.yml"
+@@ -145,7 +151,7 @@
+                         "${openstack_compute_secgroup_v2.k8s.name}" ]
+     metadata = {
+         ssh_user = "${var.ssh_user}"
+-        kubespray_groups = "kube-master,kube-node,k8s-cluster,vault,no-floating"
++        kubespray_groups = "kube-master,k8s-cluster,vault,no-floating"
+     }
+     provisioner "local-exec" {
+         command = "sed s/USER/${var.ssh_user}/ contrib/terraform/openstack/ansible_bastion_template.txt | sed s/BASTION_ADDRESS/${element(openstack_networking_floatingip_v2.k8s_master.*.address, 0)}/ > contrib/terraform/openstack/group_vars/no-floating.yml"
