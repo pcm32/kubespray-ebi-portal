@@ -1,15 +1,9 @@
 #!/bin/bash
 
-if ps -p $SSH_AGENT_PID > /dev/null
-then
-   echo "ssh-agent is already running"
-   # Do something knowing the pid exists, i.e. the process with $PID is running
-else
-   source config.sh
-   export PRIVATE_KEY="$PWD/keys/key.pem"
-   eval $(ssh-agent -s)
-   ssh-add $PRIVATE_KEY
-fi
+source config.sh
+export PRIVATE_KEY="$PWD/keys/key.pem"
+eval $(ssh-agent -s)
+ssh-add $PRIVATE_KEY
 
 PORTAL_DEPLOYMENTS_ROOT=deployments
 
