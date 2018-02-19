@@ -14,7 +14,7 @@ This repo allows you to deploy Kubernetes plus a shared file system (GlusterFS) 
 
 Assemble a folder in your machine with the following files:
 
-- `keys`: a folder named `keys` containing key.pub and key.pem (for the private key). If you don't have a set of keys that you want to use, you can create keys executing `ssh-keygen -t rsa` on linux/macOS Terminal, and rename keys adequately.
+- `keys`: a folder named `keys` containing key.pub and key.pem (for the private key). If you don't have a set of keys that you want to use, you can create keys executing `ssh-keygen -t rsa` on linux/macOS Terminal, and rename keys adequately. **Please note!** Do not use keys that have been generated using a passphrase.
 - `openstack.rc`: OpenStack API access RC file, which you can obtain from your OpenStack Horizon dashboard, under Compute -> API Access. Prefer the v3 file if available.
 - `config.sh`: Bash file with configuration for the deployment (flavours for instances, number of master, etc, see config.sh.sample)
 
