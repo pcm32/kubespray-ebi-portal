@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 source $PWD/openstack.rc
 source $PWD/config.sh
 source $PWD/image-settings.sh
