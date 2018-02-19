@@ -52,7 +52,7 @@ fi
 MOUNT_OPENSTACK_RC="-v $OPENSTACK_RC:/cloud-deploy/openstack.rc"
 
 echo "Now execute to deploy:"
-echo "$ run-deployment.sh"
+echo "$ ./run-deployment.sh"
 
 MOUNT_ARTIFACTS="-v $PROJECT_DIR/artifacts:/cloud-deploy/artifacts"
 
