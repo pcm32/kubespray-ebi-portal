@@ -4,11 +4,10 @@ This repo allows you to deploy Kubernetes plus a shared file system (GlusterFS) 
 
 ## Requirements
 
-- docker
+- docker ([Manage Docker as a non-root user](https://docs.docker.com/install/linux/linux-postinstall/))
 - ability to generate ssh private and public keys
 - openstack RC API access file, from Horizon
 - a written config for the deployment. See the included config.sh.sample
-
 
 ## How to use it
 
