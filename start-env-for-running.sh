@@ -56,6 +56,6 @@ echo "$ ./run-deployment.sh"
 
 MOUNT_ARTIFACTS="-v $PROJECT_DIR/artifacts:/cloud-deploy/artifacts"
 
-docker run -v $PWD/keys:/cloud-deploy/keys $MOUNT_DEPLOYMENT_CONFIG \
+docker run -v ${PROJECT_DIR}/keys:/cloud-deploy/keys $MOUNT_DEPLOYMENT_CONFIG \
 	$MOUNT_STATE_DIR $MOUNT_OPENSTACK_RC $MOUNT_ARTIFACTS -it --entrypoint bash \
 	$ENV_DEPLOY_DOCKER_IMAGE
