@@ -9,6 +9,7 @@ COPY run-destroy.sh run-destroy.sh
 COPY set-kubeconfig.sh set-kubeconfig.sh
 COPY image-settings.sh image-settings.sh
 COPY patches patches
+COPY run-helm-charts.sh run-helm-charts.sh
 RUN patch -p0 -f < patches/kubespray-tf_secgroup_taints.patch
 RUN chmod a+x set-kubeconfig.sh run-destroy.sh
 COPY playbooks playbooks
