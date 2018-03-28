@@ -50,6 +50,8 @@ ansible-playbook -b --become-user=root -i $PORTAL_DEPLOYMENTS_ROOT'/'$PORTAL_DEP
 	-e kube_api_pwd=$TF_VAR_kube_api_pwd \
 	-e cluster_name=$TF_VAR_cluster_name \
 	-e '{ helm_enabled: True }' \
+	-e '{ dashboard_enabled: False }' \
+	-e '{ rbac_enabled: True }' \
 	-e '{ kubeconfig_localhost: True }' \
 	-e kube_network_plugin="flannel"
 
