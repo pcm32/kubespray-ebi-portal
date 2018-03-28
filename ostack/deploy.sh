@@ -47,7 +47,6 @@ ansible-playbook -b --become-user=root -i $PORTAL_DEPLOYMENTS_ROOT'/'$PORTAL_DEP
 	-e host_key_checking=false \
 	-e cloud_provider="openstack" \
 	-e '{ efk_enabled: False }' \
-        -e kubelet_deployment_type=$KUBELET_DEPLOYMENT_TYPE \
 	-e kube_api_pwd=$TF_VAR_kube_api_pwd \
 	-e cluster_name=$TF_VAR_cluster_name \
 	-e '{ helm_enabled: True }' \
