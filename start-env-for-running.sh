@@ -1,6 +1,6 @@
 #mkdir -p keys
 
-ENV_DEPLOY_DOCKER_IMAGE=${ENV_DEPLOY_DOCKER_IMAGE:-quay.io/pcm32/kubespray-ebi-portal:v2.3.0-ubuntu-xenial}
+ENV_DEPLOY_DOCKER_IMAGE=${ENV_DEPLOY_DOCKER_IMAGE:-quay.io/pcm32/kubespray-ebi-portal:v2.4.0-ubuntu-xenial}
 
 if [[ ! "$PROJECT_DIR" = /* ]]; then
 	echo "PROJECT_DIR should be a full path to the directory where you have:"
