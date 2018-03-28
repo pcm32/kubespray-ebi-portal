@@ -1,6 +1,6 @@
 # Deployment of Kubernetes + shared file system
 
-This repo allows you to deploy Kubernetes plus a shared file system (GlusterFS) using Kubespray v2.3.0 (plus two minor patches).
+This repo allows you to deploy Kubernetes plus a shared file system (GlusterFS) using Kubespray v2.4.0 (plus pending changes on contrib/terraform/openstack).
 
 ## Requirements
 
