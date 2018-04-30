@@ -57,6 +57,7 @@ if [ -d $APPLICATIONS ]; then
    MOUNT_APPLICATIONS="-v $APPLICATIONS:/cloud-deploy/applications"
 fi
 
+docker pull $ENV_DEPLOY_DOCKER_IMAGE
 
 echo "Now execute to deploy:"
 echo "$ ./run-deployment.sh"
