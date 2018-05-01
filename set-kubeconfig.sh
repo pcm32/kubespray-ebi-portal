@@ -7,12 +7,12 @@ ssh-add $PRIVATE_KEY
 
 PORTAL_DEPLOYMENTS_ROOT=deployments
 
-PUBLIC_IP=`awk -F'@' '{ print $2 }' $PORTAL_DEPLOYMENTS_ROOT'/'$PORTAL_DEPLOYMENT_REFERENCE/group_vars/no-floating.yml | sed s/\"\'//`
+PUBLIC_IP=`awk -F'@' '{ print $2 }' $PORTAL_DEPLOYMENTS_ROOT'/'$PORTAL_DEPLOYMENT_REFERENCE/group_vars/no-floating.yml | awk '{ print $1 }' | sed s/\"\'//`
 
 # we need to avoid the trusted key prompt
 HOSTNAME=`ansible -b --become-user=root -i $PORTAL_DEPLOYMENTS_ROOT'/'$PORTAL_DEPLOYMENT_REFERENCE'/hosts' kube-master[0] -m setup -a 'filter=ansible_hostname' | grep ansible_hostname | awk -F':' '{ print $2}' | sed s/\"//g | sed -e 's/^[[:space:]]*//'`
 
-sed -i 's+https://.*:6443+https://'"$HOSTNAME"':6443+' /cloud-deploy/artifacts/admin.conf
+sed 's+https://.*:6443+https://'"$HOSTNAME"':6443+' $PORTAL_DEPLOYMENTS_ROOT'/'$PORTAL_DEPLOYMENT_REFERENCE'/artifacts/admin.conf' > /cloud-deploy/artifacts/admin.conf
 echo "Add this line to your external /etc/hosts if needed:"
 echo "$PUBLIC_IP $HOSTNAME"
 echo "$PUBLIC_IP $HOSTNAME" >> /etc/hosts

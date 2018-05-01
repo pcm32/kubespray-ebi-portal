@@ -32,8 +32,6 @@ printf 'Using deployment directory "%s"\n' "$deployment_dir"
 
 ostack/deploy.sh
 
-cp -r kubespray/artifacts $PWD
-
 ./set-kubeconfig.sh
 
 echo 'You can run as well helm deployments on applications by running:'
